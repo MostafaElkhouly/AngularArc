@@ -1,38 +1,37 @@
 import { BaseModel } from "../model/base.model";
-import { BaseComponent } from "./base.component";
 
-export abstract class BaseFormComponent<TModel extends BaseModel> extends BaseComponent<TModel> {
+
+export abstract class BaseComponent<TModel extends BaseModel> {
+
+  lang: string;
+
 
   constructor()
   {
-    super();
-    this.initForm();
+
   }
 
-  /**
-   *
-   */
-  abstract initForm(): void;
+  isNan(item: string | number): boolean {
+    return item === null || item === undefined || item.toString() === '' ;
+  }
 
-  /**
-   *
-   */
-  abstract loadData(): void;
+  isArrayEmpty(item: any[], minLength?: number): boolean {
 
-  /**
-   *
-   * @param model
-   */
-  abstract setData(model: TModel): void;
+    if(Array.isArray(item)) {
+      if(!this.isNan(minLength))
+        return item.length < minLength;
+      return item.length === 0;
+    }
+    return true;
+  }
 
-  /**
-   *
-   */
-  abstract getData(): TModel;
+  clearDuplicateFromArray<T>(item: T[]): T[] {
 
-  /**
-   *
-   */
-  abstract save(): void;
+    return [...new Map(item.
+      map(item => [JSON.stringify(item), item])).
+      values()];
+  }
+
+
 
 }
